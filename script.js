@@ -2,7 +2,7 @@
 // ==UserScript==
 // @name         multitwitch resize
 // @namespace    http://tampermonkey.net/
-// @version      2025-02-19
+// @version      2025-02-20
 // @description  A simple script to add a button for resizing chat on multitwitch.tv.
 // @author       https://github.com/ironkrendel
 // @match        https://www.multitwitch.tv/*

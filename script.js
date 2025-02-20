@@ -1,6 +1,5 @@
-/* globals jQuery, $, waitForKeyElements */
 // ==UserScript==
-// @name         multitwitch resize
+// @name         multitwitch resize chat
 // @namespace    http://tampermonkey.net/
 // @version      2025-02-20
 // @description  A simple script to add a button for resizing chat on multitwitch.tv.
@@ -8,8 +7,9 @@
 // @match        https://www.multitwitch.tv/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        none
-// @downloadURL https://update.greasyfork.org/scripts/527475/multitwitch%20resize.user.js
-// @updateURL https://update.greasyfork.org/scripts/527475/multitwitch%20resize.meta.js
+// @license      GNU GPLv3
+// @downloadURL  https://update.greasyfork.org/scripts/527475/multitwitch%20resize.user.js
+// @updateURL    https://update.greasyfork.org/scripts/527475/multitwitch%20resize.meta.js
 // ==/UserScript==
 
 var startPosX = -1;

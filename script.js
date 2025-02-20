@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         multitwitch resize chat
 // @namespace    http://tampermonkey.net/
-// @version      2025-02-20
+// @version      2025-02-20-2
 // @description  A simple script to add a button for resizing chat on multitwitch.tv.
 // @author       https://github.com/ironkrendel
 // @match        https://www.multitwitch.tv/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        none
 // @license      GNU GPLv3
-// @downloadURL  https://update.greasyfork.org/scripts/527475/multitwitch%20resize.user.js
-// @updateURL    https://update.greasyfork.org/scripts/527475/multitwitch%20resize.meta.js
+// @downloadURL https://update.greasyfork.org/scripts/527475/multitwitch%20resize%20chat.user.js
+// @updateURL https://update.greasyfork.org/scripts/527475/multitwitch%20resize%20chat.meta.js
 // ==/UserScript==
 
 var startPosX = -1;
@@ -23,6 +23,7 @@ var original_stream_width;
 var wrapper = document.getElementById('wrapper');
 var chatbox = document.getElementById('chatbox');
 var streams = document.getElementById('streams');
+var bottom_right_bar = document.getElementById('bottom_right_bar');
 
 function resizeChat(_offset) {
     chatbox.style.width = String(original_chat_width + _offset) + "px";
@@ -66,6 +67,16 @@ function resizeChat(_offset) {
     }
 }
 
+function handleToggleChat(event) {
+    if (chat_hidden) {
+        resize_btn.style.display = "none";
+    }
+    else {
+        resize_btn.style.display = "flex";
+        resizeChat(offset);
+    }
+}
+
 function handleMouseMove(event) {
     mousePosX = event.clientX;
     if (startPosX == -1) return;
@@ -86,6 +97,8 @@ function handleMouseUp(event) {
 }
 
 function handleReset(event) {
+    console.log(1);
+    if (event.which != 3) return;
     offset = 0;
     resizeChat(offset);
 }
@@ -98,6 +111,10 @@ if (streams.childElementCount > 0) {
     original_stream_width = streams.children[0].getBoundingClientRect().width;
 }
 
+if (bottom_right_bar.childElementCount > 1) {
+    bottom_right_bar.children[1].addEventListener('click', handleToggleChat);
+}
+
 original_chat_width = chatbox.getBoundingClientRect().width;
 original_chat_height = chatbox.getBoundingClientRect().height;
 
@@ -105,8 +122,10 @@ console.log("Multitwitch resize btn is active");
 
 var resize_btn = document.createElement('button');
 resize_btn.id = 'resize_btn';
-resize_btn.setAttribute("style", "padding:0px;border:0px;width:10px;height:10px;background-color:red;position:absolute;right:0px;");
-wrapper.append(resize_btn);
+resize_btn.setAttribute("style", "padding:0px;border:0px;width:10px;height:10px;background-color:red;position:absolute;right:0px;display:flex;");
+if (streams.childElementCount > 0) {
+    wrapper.append(resize_btn);
+}
 resize_btn.style.right = String(chatbox.getBoundingClientRect().width + resize_btn.getBoundingClientRect().width + 3) + "px";
 
 for (var i = 0;i < streams.childElementCount;i++) {
@@ -114,6 +133,7 @@ for (var i = 0;i < streams.childElementCount;i++) {
 }
 
 resize_btn.addEventListener("mousedown", handleMouseDown);
+resize_btn.addEventListener("mousedown", handleReset);
 document.addEventListener("mouseup", handleMouseUp);
 window.addEventListener("resize", (event) => {
     resizeChat(offset);
